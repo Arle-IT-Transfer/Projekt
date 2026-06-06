@@ -2,85 +2,273 @@
 <html lang="sq">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arle IT | Transfer</title>
     <style>
-        /* Animacioni i sfondit */
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        /* SFONDI I NDRAUT REALE SI NË FOTO (PA FOTO SHTESË) */
         body {
-            margin: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            align-items: center;
+            background-color: #0b0214;
+            background-image: 
+                radial-gradient(at 10% 20%, #7b2cbf 0px, transparent 50%),
+                radial-gradient(at 90% 10%, #00b4d8 0px, transparent 50%),
+                radial-gradient(at 80% 90%, #0077b6 0px, transparent 50%),
+                radial-gradient(at 15% 85%, #14213d 0px, transparent 50%),
+                radial-gradient(at 50% 50%, #0f4c5c 0px, transparent 60%);
+            background-size: cover;
+            background-attachment: fixed;
+            color: #ffffff;
+            padding: 20px;
         }
 
         .container {
-            /* Efekti Liquid Glass */
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 40px;
-            border-radius: 20px;
+            width: 100%;
+            max-width: 650px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .logo {
             text-align: center;
-            width: 90%;
-            max-width: 450px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        h1 { margin-bottom: 25px; font-weight: 300; letter-spacing: 1px; }
+        .logo span {
+            font-weight: 300;
+            opacity: 0.8;
+        }
 
-        .upload-area {
-            border: 2px dashed rgba(255, 255, 255, 0.5);
-            padding: 40px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: 0.3s;
+        /* EFEKTI XHAMIT I ERRET KUNDREJT SFONDIT TONË */
+        .glass-panel {
+            background: rgba(15, 10, 25, 0.35);
+            backdrop-filter: blur(30px) saturate(160%);
+            -webkit-backdrop-filter: blur(30px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Zona Dropzone */
+        .dropzone {
+            border: 2px dashed rgba(0, 180, 216, 0.6);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            background: rgba(0, 180, 216, 0.03);
             margin-bottom: 20px;
-        }
-
-        .upload-area:hover { background: rgba(255, 255, 255, 0.1); }
-
-        button {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid white;
-            padding: 12px 25px;
-            border-radius: 50px;
             cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            text-transform: uppercase;
+            transition: all 0.3s ease;
         }
 
-        button:hover { background: white; color: #23a6d5; }
+        .dropzone:hover {
+            background: rgba(0, 180, 216, 0.08);
+            border-color: #00b4d8;
+        }
 
-        a { color: rgba(255, 255, 255, 0.8); text-decoration: none; margin-top: 15px; display: block; font-size: 14px; }
+        .upload-icon {
+            font-size: 40px;
+            color: #00b4d8;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .dropzone p {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .dropzone span {
+            display: block;
+            font-size: 13px;
+            opacity: 0.5;
+            margin: 5px 0;
+        }
+
+        /* Buttonat */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 26px;
+            border-radius: 30px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0077b6, #00b4d8);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn:hover {
+            opacity: 0.95;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Lista e skedarëve */
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 500;
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            flex: 1;
+            max-width: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            height: 5px;
+            border-radius: 3px;
+            position: relative;
+            margin-left: 15px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #0077b6, #00b4d8);
+            height: 100%;
+            width: 55%; 
+            border-radius: 3px;
+        }
+
+        .file-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .action-link {
+            color: #00b4d8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .action-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Arle IT | Transfer</h1>
-        <form action="/upload" method="POST" enctype="multipart/form-data">
-            <div class="upload-area">
-                <p>Tërhiq & Lësho Skedarët këtu</p>
-                <input type="file" name="file" multiple style="opacity: 0; cursor: pointer;">
-            </div>
-            <button type="submit">Ngarko Skedarët</button>
-        </form>
-        <a href="/files">Shiko Skedarët e ngarkuar</a>
+<div class="container">
+    <div class="logo">Arle IT <span>| Transfer</span></div>
+
+    <div class="glass-panel">
+        <div class="dropzone">
+            <div class="upload-icon">☁️</div>
+            <p>Tërhiq & Lësho Skedarët këtu</p>
+            <span>ose</span>
+            <p style="color: #00b4d8;">Kliko për të Zgjedhur</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-primary">📤 Ngarko Skedarët</button>
+            <button class="btn btn-secondary">📄 Shiko Skedarët</button>
+        </div>
     </div>
+
+    <div class="glass-panel file-list">
+        <div class="file-item">
+            <div class="file-info">
+                <span>📄</span>
+                <span class="file-name">Raport_Projekt.pdf</span>
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                </div>
+            </div>
+            <div class="file-meta">
+                <span>Loading</span>
+                <span>13 hours ago</span>
+                <a href="#" class="action-link">⬇️ Download</a>
+            </div>
+        </div>
+
+        <div class="file-item">
+            <div class="file-info">
+                <span>🖼️</span>
+                <span class="file-name">Imazh_Projekti_V2.png</span>
+            </div>
+            <div class="file-meta">
+                <span>18 hours ago</span>
+                <a href="#" class="action-link">⬇️ Download</a>
+            </div>
+        </div>
+        
+        <div class="file-item">
+            <div class="file-info">
+                <span>🖼️</span>
+                <span class="file-name">Imazh_Projekti_V2.png</span>
+            </div>
+            <div class="file-meta">
+                <span>13 hours ago</span>
+                <a href="#" class="action-link">⬇️ Download</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
