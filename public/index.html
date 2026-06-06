@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <title>Arle IT | Transfer</title>
+    <style>
+        /* Sfondi dinamik */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            margin: 0; min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(-45deg, #4facfe, #00f2fe, #8e2de2, #4a00e0);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: white;
+        }
+
+        .main-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 40px; border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            width: 100%; max-width: 450px; text-align: center;
+        }
+
+        .upload-card {
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            padding: 40px; border-radius: 15px;
+            cursor: pointer; transition: 0.3s;
+            margin-bottom: 20px;
+        }
+        .upload-card:hover { background: rgba(255, 255, 255, 0.1); }
+
+        button {
+            background: #0061ff; color: white; border: none;
+            padding: 12px 30px; border-radius: 8px;
+            cursor: pointer; font-weight: bold; font-size: 16px;
+        }
+
+        #file-list { margin-top: 20px; text-align: left; font-size: 14px; }
+        .file-item { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <h1>Arle IT | Transfer</h1>
+    
+    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+        <div class="upload-card" id="dropZone">
+            <p>Tërhiq & Lësho skedarët këtu <br> ose Kliko për të zgjedhur</p>
+            <input type="file" name="file" id="fileInput" multiple style="display:none;">
+        </div>
+        <button type="submit">Ngarko Skedarët</button>
+    </form>
+
+    <div id="file-list"></div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const dropZone = document.getElementById('dropZone');
+    const fileList = document.getElementById('file-list');
+
+    // Kliko për të hapur dialogun e skedarëve
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    // Shfaq skedarët e zgjedhur në listë
+    fileInput.addEventListener('change', function() {
+        showFiles(this.files);
+    });
+
+    // Logjika për Drag & Drop
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); });
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileInput.files = e.dataTransfer.files;
+        showFiles(e.dataTransfer.files);
+    });
+
+    function showFiles(files) {
+        fileList.innerHTML = '<h4>Skedarët e zgjedhur:</h4>';
+        for (let file of files) {
+            fileList.innerHTML += `<div class="file-item">📄 ${file.name}</div>`;
+        }
+    }
+</script>
+
+</body>
+</html>
