@@ -2,392 +2,77 @@
 <html lang="sq">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arle IT | Transfer</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        body { 
+            margin: 0; height: 100vh; display: flex; align-items: center; justify-content: flex-start;
+            padding-left: 10%; font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
         }
 
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #0b0214;
-            background-image: 
-                radial-gradient(at 10% 20%, #7b2cbf 0px, transparent 50%),
-                radial-gradient(at 90% 10%, #00b4d8 0px, transparent 50%),
-                radial-gradient(at 80% 90%, #0077b6 0px, transparent 50%),
-                radial-gradient(at 15% 85%, #14213d 0px, transparent 50%),
-                radial-gradient(at 50% 50%, #0f4c5c 0px, transparent 60%);
-            background-size: cover;
-            background-attachment: fixed;
-            color: #ffffff;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 650px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .logo {
-            text-align: center;
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        .logo span {
-            font-weight: 300;
-            opacity: 0.8;
-        }
-
-        .glass-panel {
-            background: rgba(15, 10, 25, 0.35);
-            backdrop-filter: blur(30px) saturate(160%);
-            -webkit-backdrop-filter: blur(30px) saturate(160%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-            position: relative;
-        }
-
-        /* Stilimi i ri për zgjedhjen e gjuhës brenda panelit */
-        .lang-wrapper {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 15px;
-            width: 100%;
-        }
-
-        .lang-select {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            padding: 8px 14px;
-            border-radius: 20px;
-            cursor: pointer;
-            outline: none;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .lang-select:hover {
+        .glass-card {
             background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .lang-select option {
-            background: #110426;
-            color: #ffffff;
-        }
-
-        .dropzone {
-            border: 2px dashed rgba(0, 180, 216, 0.6);
-            border-radius: 12px;
-            padding: 40px 20px;
-            text-align: center;
-            background: rgba(0, 180, 216, 0.03);
-            margin-bottom: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .dropzone.dragover {
-            background: rgba(0, 180, 216, 0.2);
-            border-color: #ffffff;
-            transform: scale(1.02);
-        }
-
-        .upload-icon {
-            font-size: 40px;
-            color: #00b4d8;
-            margin-bottom: 15px;
-            display: inline-block;
-        }
-
-        .dropzone p {
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .dropzone span {
-            display: block;
-            font-size: 13px;
-            opacity: 0.5;
-            margin: 5px 0;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 12px 26px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 30px;
-            border: none;
-            font-size: 14px;
-            font-weight: 600;
+            padding: 50px;
+            width: 450px; /* E bera me e madhe */
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            color: white;
+        }
+
+        h2 { margin-bottom: 30px; font-weight: 500; }
+
+        /* Zonja e ngarkimit të skedarëve */
+        .upload-zone {
+            border: 2px dashed rgba(255,255,255,0.4);
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 25px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
+            transition: 0.3s;
+        }
+        .upload-zone:hover { background: rgba(255,255,255,0.1); }
+
+        .input-group { margin-bottom: 20px; }
+        input, textarea { 
+            width: 100%; background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 15px; border-radius: 12px; color: white;
+            box-sizing: border-box;
         }
 
-        .btn:active {
-            transform: scale(0.97);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #0077b6, #00b4d8);
-            color: white;
-            box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.06);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .file-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .file-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 14px 18px;
-            border-radius: 10px;
-            font-size: 14px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .file-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex: 1;
-        }
-
-        .file-name {
-            font-weight: 500;
-            max-width: 250px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .file-meta {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .action-link {
-            color: #00b4d8;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .action-link:hover {
-            text-decoration: underline;
-        }
-
-        #fileInput {
-            display: none;
+        button {
+            background: white; color: black; border: none;
+            padding: 18px; width: 100%; border-radius: 50px;
+            cursor: pointer; font-weight: bold; font-size: 16px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="logo">Arle IT <span id="logoSub">| Transfer</span></div>
-
-    <input type="file" id="fileInput" multiple>
-
-    <div class="glass-panel">
-        <div class="lang-wrapper">
-            <select class="lang-select" id="langSelect">
-                <option value="sq">🇦🇱 Shqip</option>
-                <option value="en">🇬🇧 English</option>
-                <option value="de">🇩🇪 Deutsch</option>
-                <option value="it">🇮🇹 Italiano</option>
-                <option value="fr">🇫🇷 Français</option>
-            </select>
+    <div class="glass-card">
+        <h2>Transferoni skedarët</h2>
+        
+        <!-- Shto skedarët -->
+        <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+            <p>Klikoni për të zgjedhur skedarë ose tërhiqini këtu</p>
+            <input type="file" id="fileInput" multiple style="display:none;">
         </div>
 
-        <div class="dropzone" id="dropzone">
-            <div class="upload-icon">☁️</div>
-            <p id="textDrag">Tërhiq & Lësho Skedarët këtu</p>
-            <span id="textOr">ose</span>
-            <p style="color: #00b4d8;" id="textClick">Kliko për të Zgjedhur</p>
-        </div>
-
-        <div class="button-group">
-            <button class="btn btn-primary" id="uploadBtn"><span id="btnUploadText">📤 Ngarko Skedarët</span></button>
-            <button class="btn btn-secondary" id="viewBtn"><span id="btnViewText">📄 Shiko Skedarët</span></button>
-        </div>
+        <form>
+            <div class="input-group">
+                <input type="email" placeholder="Dërgo tek (Email)">
+            </div>
+            <div class="input-group">
+                <input type="email" placeholder="Nga (Email)">
+            </div>
+            <div class="input-group">
+                <textarea placeholder="Mesazh" rows="3"></textarea>
+            </div>
+            <button type="submit">Transfero</button>
+        </form>
     </div>
-
-    <div class="glass-panel file-list" id="fileList">
-        </div>
-</div>
-
-<script>
-    const translations = {
-        sq: {
-            logoSub: "| Transfer",
-            textDrag: "Tërhiq & Lësho Skedarët këtu",
-            textOr: "ose",
-            textClick: "Kliko për të Zgjedhur",
-            btnUpload: "📤 Ngarko Skedarët",
-            btnView: "📄 Shiko Skedarët",
-            justNow: "Tani",
-            download: "Download",
-            alertText: "Shkarkimi filloi për: "
-        },
-        en: {
-            logoSub: "| Transfer",
-            textDrag: "Drag & Drop Files here",
-            textOr: "or",
-            textClick: "Click to Select",
-            btnUpload: "📤 Upload Files",
-            btnView: "📄 View Files",
-            justNow: "Just now",
-            download: "Download",
-            alertText: "Download started for: "
-        },
-        de: {
-            logoSub: "| Transfer",
-            textDrag: "Dateien hierher ziehen & ablegen",
-            textOr: "oder",
-            textClick: "Klicken zum Auswählen",
-            btnUpload: "📤 Dateien hochladen",
-            btnView: "📄 Dateien anzeigen",
-            justNow: "Gerade eben",
-            download: "Herunterladen",
-            alertText: "Herunterladen gestartet für: "
-        },
-        it: {
-            logoSub: "| Trasferimento",
-            textDrag: "Trascina e rilascia i file qui",
-            textOr: "o",
-            textClick: "Fai clic per selezionare",
-            btnUpload: "📤 Carica file",
-            btnView: "📄 Visualizza file",
-            justNow: "Proprio ora",
-            download: "Scarica",
-            alertText: "Download avviato per: "
-        },
-        fr: {
-            logoSub: "| Transfert",
-            textDrag: "Glissez & déposez les fichiers ici",
-            textOr: "ou",
-            textClick: "Cliquez pour sélectionner",
-            btnUpload: "📤 Importer des fichiers",
-            btnView: "📄 Voir les fichiers",
-            justNow: "À l'instant",
-            download: "Télécharger",
-            alertText: "Téléchargement commencé pour: "
-        }
-    };
-
-    const langSelect = document.getElementById('langSelect');
-    const dropzone = document.getElementById('dropzone');
-    const fileInput = document.getElementById('fileInput');
-    const uploadBtn = document.getElementById('uploadBtn');
-    const fileList = document.getElementById('fileList');
-
-    let currentLang = 'sq';
-
-    langSelect.addEventListener('change', (e) => {
-        currentLang = e.target.value;
-        updateLanguage();
-    });
-
-    function updateLanguage() {
-        const t = translations[currentLang];
-        document.getElementById('logoSub').innerText = t.logoSub;
-        document.getElementById('textDrag').innerText = t.textDrag;
-        document.getElementById('textOr').innerText = t.textOr;
-        document.getElementById('textClick').innerText = t.textClick;
-        document.getElementById('btnUploadText').innerText = t.btnUpload;
-        document.getElementById('btnViewText').innerText = t.btnView;
-    }
-
-    dropzone.addEventListener('click', () => fileInput.click());
-    uploadBtn.addEventListener('click', () => fileInput.click());
-
-    fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
-
-    dropzone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropzone.classList.add('dragover');
-    });
-
-    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
-
-    dropzone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropzone.classList.remove('dragover');
-        handleFiles(e.dataTransfer.files);
-    });
-
-    function handleFiles(files) {
-        if (files.length === 0) return;
-        const t = translations[currentLang];
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            let icon = '📄';
-            if (file.type.startsWith('image/')) icon = '🖼️';
-            if (file.type.startsWith('video/')) icon = '🎥';
-
-            const fileItem = document.createElement('div');
-            fileItem.className = 'file-item';
-            fileItem.innerHTML = `
-                <div class="file-info">
-                    <span>${icon}</span>
-                    <span class="file-name" title="${file.name}">${file.name}</span>
-                </div>
-                <div class="file-meta">
-                    <span>${t.justNow}</span>
-                    <a href="#" class="action-link" onclick="alert('${t.alertText}${file.name}')">⬇️ ${t.download}</a>
-                </div>
-            `;
-            fileList.appendChild(fileItem);
-        }
-    }
-</script>
 
 </body>
 </html>
