@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Arle IT | Transfer</title>
     <style>
-        /* Sfondi dinamik */
+        /* Animacioni i sfondit */
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -12,85 +12,75 @@
         }
 
         body {
-            margin: 0; min-height: 100vh;
-            display: flex; align-items: center; justify-content: center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(-45deg, #4facfe, #00f2fe, #8e2de2, #4a00e0);
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
+        }
+
+        .container {
+            /* Efekti Liquid Glass */
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
             color: white;
         }
 
-        .main-container {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            padding: 40px; border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            width: 100%; max-width: 450px; text-align: center;
-        }
+        h1 { margin-bottom: 25px; font-weight: 300; letter-spacing: 1px; }
 
-        .upload-card {
+        .upload-area {
             border: 2px dashed rgba(255, 255, 255, 0.5);
-            padding: 40px; border-radius: 15px;
-            cursor: pointer; transition: 0.3s;
+            padding: 40px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
             margin-bottom: 20px;
         }
-        .upload-card:hover { background: rgba(255, 255, 255, 0.1); }
+
+        .upload-area:hover { background: rgba(255, 255, 255, 0.1); }
 
         button {
-            background: #0061ff; color: white; border: none;
-            padding: 12px 30px; border-radius: 8px;
-            cursor: pointer; font-weight: bold; font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            text-transform: uppercase;
         }
 
-        #file-list { margin-top: 20px; text-align: left; font-size: 14px; }
-        .file-item { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        button:hover { background: white; color: #23a6d5; }
+
+        a { color: rgba(255, 255, 255, 0.8); text-decoration: none; margin-top: 15px; display: block; font-size: 14px; }
     </style>
 </head>
 <body>
 
-<div class="main-container">
-    <h1>Arle IT | Transfer</h1>
-    
-    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
-        <div class="upload-card" id="dropZone">
-            <p>Tërhiq & Lësho skedarët këtu <br> ose Kliko për të zgjedhur</p>
-            <input type="file" name="file" id="fileInput" multiple style="display:none;">
-        </div>
-        <button type="submit">Ngarko Skedarët</button>
-    </form>
-
-    <div id="file-list"></div>
-</div>
-
-<script>
-    const fileInput = document.getElementById('fileInput');
-    const dropZone = document.getElementById('dropZone');
-    const fileList = document.getElementById('file-list');
-
-    // Kliko për të hapur dialogun e skedarëve
-    dropZone.addEventListener('click', () => fileInput.click());
-
-    // Shfaq skedarët e zgjedhur në listë
-    fileInput.addEventListener('change', function() {
-        showFiles(this.files);
-    });
-
-    // Logjika për Drag & Drop
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); });
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        fileInput.files = e.dataTransfer.files;
-        showFiles(e.dataTransfer.files);
-    });
-
-    function showFiles(files) {
-        fileList.innerHTML = '<h4>Skedarët e zgjedhur:</h4>';
-        for (let file of files) {
-            fileList.innerHTML += `<div class="file-item">📄 ${file.name}</div>`;
-        }
-    }
-</script>
+    <div class="container">
+        <h1>Arle IT | Transfer</h1>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <div class="upload-area">
+                <p>Tërhiq & Lësho Skedarët këtu</p>
+                <input type="file" name="file" multiple style="opacity: 0; cursor: pointer;">
+            </div>
+            <button type="submit">Ngarko Skedarët</button>
+        </form>
+        <a href="/files">Shiko Skedarët e ngarkuar</a>
+    </div>
 
 </body>
 </html>
