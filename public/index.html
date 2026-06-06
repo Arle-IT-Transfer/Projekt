@@ -12,7 +12,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* SFONDI I NDRAUT REALE SI NË FOTO (PA FOTO SHTESË) */
         body {
             min-height: 100vh;
             display: flex;
@@ -53,7 +52,6 @@
             opacity: 0.8;
         }
 
-        /* EFEKTI XHAMIT I ERRET KUNDREJT SFONDIT TONË */
         .glass-panel {
             background: rgba(15, 10, 25, 0.35);
             backdrop-filter: blur(30px) saturate(160%);
@@ -62,9 +60,41 @@
             border-radius: 16px;
             padding: 30px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            position: relative;
         }
 
-        /* Zona Dropzone */
+        /* Stilimi i ri për zgjedhjen e gjuhës brenda panelit */
+        .lang-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .lang-select {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            outline: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .lang-select:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .lang-select option {
+            background: #110426;
+            color: #ffffff;
+        }
+
         .dropzone {
             border: 2px dashed rgba(0, 180, 216, 0.6);
             border-radius: 12px;
@@ -76,9 +106,10 @@
             transition: all 0.3s ease;
         }
 
-        .dropzone:hover {
-            background: rgba(0, 180, 216, 0.08);
-            border-color: #00b4d8;
+        .dropzone.dragover {
+            background: rgba(0, 180, 216, 0.2);
+            border-color: #ffffff;
+            transform: scale(1.02);
         }
 
         .upload-icon {
@@ -100,7 +131,6 @@
             margin: 5px 0;
         }
 
-        /* Buttonat */
         .button-group {
             display: flex;
             gap: 15px;
@@ -136,12 +166,6 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        .btn:hover {
-            opacity: 0.95;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        /* Lista e skedarëve */
         .file-list {
             display: flex;
             flex-direction: column;
@@ -157,6 +181,12 @@
             padding: 14px 18px;
             border-radius: 10px;
             font-size: 14px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .file-info {
@@ -168,28 +198,10 @@
 
         .file-name {
             font-weight: 500;
-            max-width: 200px;
+            max-width: 250px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            flex: 1;
-            max-width: 150px;
-            background: rgba(255, 255, 255, 0.1);
-            height: 5px;
-            border-radius: 3px;
-            position: relative;
-            margin-left: 15px;
-        }
-
-        .progress-bar {
-            background: linear-gradient(90deg, #0077b6, #00b4d8);
-            height: 100%;
-            width: 55%; 
-            border-radius: 3px;
         }
 
         .file-meta {
@@ -209,66 +221,173 @@
         .action-link:hover {
             text-decoration: underline;
         }
+
+        #fileInput {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="logo">Arle IT <span>| Transfer</span></div>
+    <div class="logo">Arle IT <span id="logoSub">| Transfer</span></div>
+
+    <input type="file" id="fileInput" multiple>
 
     <div class="glass-panel">
-        <div class="dropzone">
+        <div class="lang-wrapper">
+            <select class="lang-select" id="langSelect">
+                <option value="sq">🇦🇱 Shqip</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="it">🇮🇹 Italiano</option>
+                <option value="fr">🇫🇷 Français</option>
+            </select>
+        </div>
+
+        <div class="dropzone" id="dropzone">
             <div class="upload-icon">☁️</div>
-            <p>Tërhiq & Lësho Skedarët këtu</p>
-            <span>ose</span>
-            <p style="color: #00b4d8;">Kliko për të Zgjedhur</p>
+            <p id="textDrag">Tërhiq & Lësho Skedarët këtu</p>
+            <span id="textOr">ose</span>
+            <p style="color: #00b4d8;" id="textClick">Kliko për të Zgjedhur</p>
         </div>
 
         <div class="button-group">
-            <button class="btn btn-primary">📤 Ngarko Skedarët</button>
-            <button class="btn btn-secondary">📄 Shiko Skedarët</button>
+            <button class="btn btn-primary" id="uploadBtn"><span id="btnUploadText">📤 Ngarko Skedarët</span></button>
+            <button class="btn btn-secondary" id="viewBtn"><span id="btnViewText">📄 Shiko Skedarët</span></button>
         </div>
     </div>
 
-    <div class="glass-panel file-list">
-        <div class="file-item">
-            <div class="file-info">
-                <span>📄</span>
-                <span class="file-name">Raport_Projekt.pdf</span>
-                <div class="progress-container">
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <div class="file-meta">
-                <span>Loading</span>
-                <span>13 hours ago</span>
-                <a href="#" class="action-link">⬇️ Download</a>
-            </div>
+    <div class="glass-panel file-list" id="fileList">
         </div>
-
-        <div class="file-item">
-            <div class="file-info">
-                <span>🖼️</span>
-                <span class="file-name">Imazh_Projekti_V2.png</span>
-            </div>
-            <div class="file-meta">
-                <span>18 hours ago</span>
-                <a href="#" class="action-link">⬇️ Download</a>
-            </div>
-        </div>
-        
-        <div class="file-item">
-            <div class="file-info">
-                <span>🖼️</span>
-                <span class="file-name">Imazh_Projekti_V2.png</span>
-            </div>
-            <div class="file-meta">
-                <span>13 hours ago</span>
-                <a href="#" class="action-link">⬇️ Download</a>
-            </div>
-        </div>
-    </div>
 </div>
+
+<script>
+    const translations = {
+        sq: {
+            logoSub: "| Transfer",
+            textDrag: "Tërhiq & Lësho Skedarët këtu",
+            textOr: "ose",
+            textClick: "Kliko për të Zgjedhur",
+            btnUpload: "📤 Ngarko Skedarët",
+            btnView: "📄 Shiko Skedarët",
+            justNow: "Tani",
+            download: "Download",
+            alertText: "Shkarkimi filloi për: "
+        },
+        en: {
+            logoSub: "| Transfer",
+            textDrag: "Drag & Drop Files here",
+            textOr: "or",
+            textClick: "Click to Select",
+            btnUpload: "📤 Upload Files",
+            btnView: "📄 View Files",
+            justNow: "Just now",
+            download: "Download",
+            alertText: "Download started for: "
+        },
+        de: {
+            logoSub: "| Transfer",
+            textDrag: "Dateien hierher ziehen & ablegen",
+            textOr: "oder",
+            textClick: "Klicken zum Auswählen",
+            btnUpload: "📤 Dateien hochladen",
+            btnView: "📄 Dateien anzeigen",
+            justNow: "Gerade eben",
+            download: "Herunterladen",
+            alertText: "Herunterladen gestartet für: "
+        },
+        it: {
+            logoSub: "| Trasferimento",
+            textDrag: "Trascina e rilascia i file qui",
+            textOr: "o",
+            textClick: "Fai clic per selezionare",
+            btnUpload: "📤 Carica file",
+            btnView: "📄 Visualizza file",
+            justNow: "Proprio ora",
+            download: "Scarica",
+            alertText: "Download avviato per: "
+        },
+        fr: {
+            logoSub: "| Transfert",
+            textDrag: "Glissez & déposez les fichiers ici",
+            textOr: "ou",
+            textClick: "Cliquez pour sélectionner",
+            btnUpload: "📤 Importer des fichiers",
+            btnView: "📄 Voir les fichiers",
+            justNow: "À l'instant",
+            download: "Télécharger",
+            alertText: "Téléchargement commencé pour: "
+        }
+    };
+
+    const langSelect = document.getElementById('langSelect');
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const fileList = document.getElementById('fileList');
+
+    let currentLang = 'sq';
+
+    langSelect.addEventListener('change', (e) => {
+        currentLang = e.target.value;
+        updateLanguage();
+    });
+
+    function updateLanguage() {
+        const t = translations[currentLang];
+        document.getElementById('logoSub').innerText = t.logoSub;
+        document.getElementById('textDrag').innerText = t.textDrag;
+        document.getElementById('textOr').innerText = t.textOr;
+        document.getElementById('textClick').innerText = t.textClick;
+        document.getElementById('btnUploadText').innerText = t.btnUpload;
+        document.getElementById('btnViewText').innerText = t.btnView;
+    }
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    uploadBtn.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+    });
+
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        handleFiles(e.dataTransfer.files);
+    });
+
+    function handleFiles(files) {
+        if (files.length === 0) return;
+        const t = translations[currentLang];
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            let icon = '📄';
+            if (file.type.startsWith('image/')) icon = '🖼️';
+            if (file.type.startsWith('video/')) icon = '🎥';
+
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <span>${icon}</span>
+                    <span class="file-name" title="${file.name}">${file.name}</span>
+                </div>
+                <div class="file-meta">
+                    <span>${t.justNow}</span>
+                    <a href="#" class="action-link" onclick="alert('${t.alertText}${file.name}')">⬇️ ${t.download}</a>
+                </div>
+            `;
+            fileList.appendChild(fileItem);
+        }
+    }
+</script>
 
 </body>
 </html>
